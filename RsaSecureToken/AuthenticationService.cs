@@ -7,17 +7,20 @@ namespace RsaSecureToken
     {
         private readonly IProfile _profile;
         private readonly IToken _rsaTokenDao;
+        private readonly ILogger _logger;
 
         public AuthenticationService()
         {
+            _logger = new Logger();
             _profile = new Profile();
             _rsaTokenDao = new RsaTokenDao();
         }
 
-        public AuthenticationService(IProfile profile, IToken rsaTokenDao)
+        public AuthenticationService(IProfile profile, IToken rsaTokenDao, ILogger logger)
         {
             _profile = profile;
             _rsaTokenDao = rsaTokenDao;
+            _logger = logger;
         }
 
         public bool IsValid(string account, string password)
@@ -38,6 +41,7 @@ namespace RsaSecureToken
             }
             else
             {
+                _logger.Save(account);
                 return false;
             }
         }
